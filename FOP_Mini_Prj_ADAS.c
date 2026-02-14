@@ -135,9 +135,9 @@ int WINAPI WinMain(
 
 // ---------------- STOPPING DISTANCE ----------------
 double StoppingDistance_m(int speed_kmh) {
-    // Reaction time = 2.5s, braking distance estimate (mu ~0.7)
+    // Reaction time = 1.8s, braking distance estimate (mu ~0.7)
     double v = speed_kmh * 1000.0 / 3600.0; // m/s
-    double reaction = 2.5; // seconds
+    double reaction = 1.8; // seconds
     double mu = 0.7;
     double g = 9.81;
     double reaction_distance = v * reaction;
@@ -303,9 +303,9 @@ LRESULT CALLBACK WndProc(
 
     case WM_COMMAND:
         switch (LOWORD(wParam)) {
-        case ID_HEADLIGHT: headlights = !headlights; break;
-        case ID_DAYNIGHT: nightMode = !nightMode; break;
-        case ID_HANDS: handsOn = !handsOn; break;
+        case ID_HEADLIGHT: headlights = !headlights; InvalidateRect(hwnd, NULL, TRUE); break;
+        case ID_DAYNIGHT: nightMode = !nightMode; InvalidateRect(hwnd, NULL, TRUE); break;
+        case ID_HANDS: handsOn = !handsOn; InvalidateRect(hwnd, NULL, TRUE); break;
 
         case ID_LEFT:
             leftInd = !leftInd;
@@ -489,7 +489,7 @@ void DrawMID(HDC hdc, RECT r) {
     // lane change: only show warning when unsafe (do not display safe-to-change)
     if (laneChangeReq) {
         if (!(leftInd || rightInd)) {
-            AddWarning(L"⚠ Lane Change Warning: Use Indicator\n");
+            AddWarning(L"⚠ Lane Change! Please Use indicator\n");
             if (highestPriority < 1) highestPriority = 1;
         }
     }
